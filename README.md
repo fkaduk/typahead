@@ -1,16 +1,16 @@
 
-# typeaheadsa
+# typeahead
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/fkaduk/typaheadsa/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fkaduk/typaheadsa/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/fkaduk/typahead/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fkaduk/typahead/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of typeaheadsa is to ...
+The goal of typeahead is to ...
 
 ## Installation
 
-You can install the development version of typeaheadsa like so:
+You can install the development version of typeahead like so:
 
 ``` r
 # FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
@@ -21,7 +21,7 @@ You can install the development version of typeaheadsa like so:
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(typeaheadsa)
+library(typeahead)
 ## basic example code
 ```
 

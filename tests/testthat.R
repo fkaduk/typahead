@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(typeaheadsa)
+library(typeahead)
 
-test_check("typeaheadsa")
+test_check("typeahead")
