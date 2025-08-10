@@ -12,10 +12,11 @@ The goal of typeahead is to ...
 
 ## Installation
 
-You can install the development version of typeahead like so:
+The development version can be installed from
+[GitHub](https://github.com/fkaduk/typeahead) with
 
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```r
+devtools::install_github("fkaduk/typahead")
 ```
 
 ## Example
