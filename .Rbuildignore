@@ -1,4 +1,5 @@
 ^LICENSE\.md$
 ^\.github$
 ^\.claude$
+^Dockerfile$
 _\.new\.png$
