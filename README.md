@@ -30,7 +30,21 @@ library(typeahead)
 
 ## Local Testing
 
-`shinytest2` requires Chrome/Chromium for browser testing. The package includes a Docker setup that provides a complete testing environment with chrome-headless-shell.
+`shinytest2` requires Chrome/Chromium for browser testing.
+
+### Host System
+
+Local testing on ubuntu requires to set:
+
+```bash
+export CHROMOTE_CHROME="/home/$USER/.cache/R/chromote/chrome/131.0.6778.85/chrome-headless-shell-linux64/chrome-headless-shell"
+export CHROMOTE_CHROME_ARGS="--no-sandbox --no-proxy-server --disable-dev-shm-usage --disable-gpu --remote-debugging-port=9222"
+```
+
+### Docker
+
+Another option is to run the tests in a container:
+
 
 ```bash
 docker build -t typeahead-test . 
