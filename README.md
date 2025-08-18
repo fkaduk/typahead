@@ -52,3 +52,7 @@ docker build -t typeahead-test .
 docker run --rm -v "$(pwd):/pkg" typeahead-test R -e "setwd('/pkg'); devtools::install_deps(dependencies = TRUE); devtools::install(); devtools::test()"
 ```
 
+# TODO
+
+- [ ] Suppress Shiny autoload warning during shinytest2 testing
+
