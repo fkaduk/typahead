@@ -21,66 +21,41 @@ It wraps the typeahead-standalone JavaScript library to deliver both server- and
 ## function APIs
 
 ```r
-#' @title Create a typeahead text input
-#' @description TODO
-#'
+#' @title Type-ahead text input
+#' @description Bootstrap-styled text box with client-side autocomplete.
 #' @param inputId Character string. Unique identifier for the input element.
-#' @param label Character string or NULL. Display label above the input field. 
-#'      If NULL, no label is displayed.
-#' @param choices=character() Character vector, named list, or list with remote configuration.
-#'      Available options for autocomplete suggestions. Can be:
-#'      \itemize{
-#'        \item Character vector: Static local choices
-#'        \item Named list: Static local choices with custom display values
-#'        \item List with \code{remote} element: Remote data source configuration
-#'      } 
-#' @param value=NULL Character string or NULL.
-#'      Pre-selected value to display in the input.
-#' @param width=NULL Character string or NULL. CSS width specification 
-#'      (e.g., "100%", "300px").
-#' @param placeholder=NULL Character string or NULL.
-#'      Placeholder text shown when input is empty.
-#' @param items=8 Integer. Maximum number of suggestions to display in dropdown.
-#' @param min_length=1 Integer. Minimum number of characters
-#'      required before showing suggestions. 
-#' @param hint=TRUE Logical. Whether to show auto-completion hints as user types. 
-#' @param options List. Additional options passed to the typeahead.js library
-#'
-#' @return A \code{shiny.tag.list} object containing the HTML input element with 
-#'   attached JavaScript dependencies and CSS styling.
-#'
-#' @details #TODO
-#' @family typeahead functions
+#' @param label Character string or NULL. Display label above the input field.
+#' @param choices Character vector. Available options for autocomplete suggestions.
+#'   If named, displays values but returns names to server (like selectInput).
+#' @param value Character string or NULL. Initial value to display in the input.
+#' @param width Character string or NULL. CSS width specification (e.g., "100%", "300px").
+#' @param placeholder Character string or NULL. Placeholder text shown when input is empty.
+#' @param items Integer. Maximum number of suggestions to display in dropdown (default 8).
+#' @param min_length Integer. Minimum number of characters required before showing suggestions (default 1).
+#' @param hint Logical. Whether to show auto-completion hints as user types (default TRUE).
+#' @param options List. Additional options passed to the typeahead.js library.
+#' @return A shiny.tag.list object containing the HTML input element with attached dependencies.
 #' @export
-#' @examples
-#' \dontrun{
-#' # Basic usage
-#' typeaheadInput("city", "Choose a city:", 
-#'                choices = c("Berlin", "Boston", "Barcelona"))
-#'
-#' # With custom options
-#' typeaheadInput("search", "Search items:",
-#'                choices = my_data$names,
-#'                placeholder = "Start typing...",
-#'                items = 5,
-#'                min_length = 2)
-#' }
-```
+typeaheadInput <- function(inputId, label, choices = character(), value = NULL, 
+                          width = NULL, placeholder = NULL, items = 8, 
+                          min_length = 1, hint = TRUE, options = list()) {
+  # Implementation
+}
 
-```r
 #' @title Update a typeahead input
-#' @description Updates the choices, value, or configuration of an existing typeahead input
-#'     from the server-side without requiring a page refresh. Dynamically replaces
-#'     the suggestion list and resets the typeahead index.
-#'
-#' @param session Shiny session object obtained from the server function.
-#' @inheritParams ...
-#'
-#' @return NULL 
-#'
-#' @details #TODO
-#' @family typeahead functions
+#' @description Replace choices, value or settings client-side.
+#' @param session The Shiny session object (default: getDefaultReactiveDomain()).
+#' @param inputId Character string. The id of the typeahead input to update.
+#' @param label Character string or NULL. New display label (optional).
+#' @param choices Character vector or NULL. New choices for autocomplete (optional).
+#' @param value Character string or NULL. New selected value (optional).
+#' @param options List or NULL. New typeahead-specific options (optional).
 #' @export
+updateTypeaheadInput <- function(session = getDefaultReactiveDomain(), inputId, 
+                                label = NULL, choices = NULL, value = NULL, 
+                                options = NULL) {
+  # Implementation  
+}
 ```
 
 ## testing
