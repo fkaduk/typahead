@@ -15,8 +15,7 @@ It wraps the typeahead-standalone JavaScript library to deliver both server- and
 - default styling matches `selectInput` appearance and behavior
 - supports `bslib` theming and customization
 - Shiny reactivity triggers only on selection, not on every keystroke
-- value semantics follow key-value pattern: server receives the key/name, not display text:
-    - supports simple character vectors `c("key" = "Display")` and rich data `c("key" = list(name = "Display", img = "url"))` for template-based displays
+- the api should match `selectInput` as far as is reasonable to offer a familiar interface
 - empty state handling: with `choices = character(0)` or `NULL`, renders functional input field with no suggestions and `NULL` value
 
 ## function APIs
