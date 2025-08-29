@@ -13,7 +13,7 @@ The goal of typeahead is to ...
 ## Installation
 
 The development version can be installed from
-[GitHub](https://github.com/fkaduk/typeahead) with
+[GitHub](https://github.com/fkaduk/typeahead) via
 
 ```r
 devtools::install_github("fkaduk/typahead")
@@ -21,18 +21,37 @@ devtools::install_github("fkaduk/typahead")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Here's a basic example showing how to create a typeahead input:
 
 ``` r
+library(shiny)
 library(typeahead)
-## basic example code
+
+ui <- fluidPage(
+  typeaheadInput(
+    inputId = "city",
+    label = "Choose a city:",
+    choices = c("Berlin", "Boston", "Barcelona", "Brussels", "Buenos Aires"),
+    placeholder = "Start typing..."
+  ),
+  
+  verbatimTextOutput("selected")
+)
+
+server <- function(input, output) {
+  output$selected <- renderText({
+    paste("You selected:", input$city)
+  })
+}
+
+shinyApp(ui = ui, server = server)
 ```
 
 ## Local Testing
 
 `shinytest2` requires Chrome/Chromium for browser testing.
 
-### Host System
+### On Host
 
 Local testing on ubuntu requires to set:
 
@@ -44,7 +63,6 @@ export CHROMOTE_CHROME_ARGS="--no-sandbox --no-proxy-server --disable-dev-shm-us
 ### Docker
 
 Another option is to run the tests in a container:
-
 
 ```bash
 docker build -t typeahead-test . 
