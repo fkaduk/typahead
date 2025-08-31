@@ -6,20 +6,24 @@ dependency_typeahead_standalone <- function() {
     name       = "typeahead-standalone",
     version    = "5.4.0",
     src        = c(file = "assets"),
-    script     = "lib/typeahead-standalone/typeahead-standalone.umd.js",
+    script     = c("lib/typeahead-standalone/typeahead-standalone.umd.js", "js/typeahead-binding.js"),
     stylesheet = c("lib/typeahead-standalone/basic.css", "css/typeahead-shiny.css"),
     package    = "typeahead"
   )
 }
 
-#' @title Type-ahead text input
+#' @title Create a type-ahead input control
 #' @description Bootstrap-styled text box with client-side autocomplete.
-#' @inheritParams shiny::textInput
-#' @param choices Character vector of choices to display in dropdown
-#' @param items Maximum number of items to show in dropdown (default 8)
-#' @param min_length Minimum number of characters before showing suggestions (default 1)
-#' @param hint Logical; whether to show hints as you type (default TRUE)
-#' @param options List of additional options to pass to typeahead library
+#' @param inputId Character string. Unique identifier for the input element.
+#' @param label Character string or NULL. Display label above the input field.
+#' @param choices Character vector. Available options for autocomplete suggestions.
+#' @param value Character string or NULL. Initial value to display in the input.
+#' @param width Character string or NULL. CSS width specification (e.g., "100%", "300px").
+#' @param placeholder Character string or NULL. Placeholder text shown when input is empty.
+#' @param items Integer. Maximum number of suggestions to display in dropdown (default 8).
+#' @param min_length Integer. Minimum number of characters required before showing suggestions (default 1).
+#' @param options List. Additional options passed to the typeahead.js library.
+#' @return A shiny.tag.list object containing the HTML input element with attached dependencies.
 #' @export
 typeaheadInput <- function(inputId,
                            label = NULL,
@@ -29,54 +33,13 @@ typeaheadInput <- function(inputId,
                            placeholder = NULL,
                            items = 8,
                            min_length = 1,
-                           hint = TRUE,
                            options = list()) {
   opts <- modifyList(
-    list(limit = items, minLength = min_length, hint = hint),
+    list(limit = items, minLength = min_length, hint = FALSE), # Hints are broken for now
     options
   )
 
   dep <- dependency_typeahead_standalone()
-
-  js_binding <- htmltools::tags$script(htmltools::HTML(sprintf("
-    (function () {
-      var binding = new Shiny.InputBinding();
-      $.extend(binding, {
-        find: function (scope) {
-          return $(scope).find('.typeahead-standalone');
-        },
-        initialize: function (el) {
-          const src   = $(el).data('source')   || [];
-          const opts  = $(el).data('options')  || {};
-
-          // Initialize typeahead
-          const ta = typeahead(Object.assign(
-            { input: el, source: { local: src } }, // must-have fields
-            opts                                    // user options win
-          ));
-          $(el).data('ta', ta);
-
-          // Style adjustments for the created elements
-          const wrapper = el.parentElement;
-          if (wrapper && wrapper.classList.contains('typeahead-standalone')) {
-            // Match form-control styling for hint
-            const hintInput = wrapper.querySelector('.tt-hint');
-            if (hintInput) {
-              hintInput.classList.add('form-control');
-            }
-          }
-        },
-        getValue: function (el) { return el.value; },
-        subscribe  : function (el, cb) { $(el).on('typeahead:select.typeahead-standalone change.typeahead-standalone', cb); },
-        unsubscribe: function (el)      { $(el).off('.typeahead-standalone'); },
-        receiveMessage: function (el, data) {
-          var ta = $(el).data('ta');
-          if (ta && data.choices) { ta.reset(true); ta.addToIndex(data.choices); }
-          if (data.value !== undefined) { el.value = data.value; }
-        }
-      });
-      Shiny.inputBindings.register(binding);
-    })();")))
 
   input_tag <- htmltools::tags$input(
     id = inputId,
@@ -85,44 +48,29 @@ typeaheadInput <- function(inputId,
     autocomplete = "off",
     value = value %||% "",
     `data-source` = jsonlite::toJSON(choices, auto_unbox = TRUE),
-    `data-options` = htmltools::HTML(
-      jsonlite::toJSON(opts, auto_unbox = TRUE, null = "null")
-    ),
+    `data-options` = jsonlite::toJSON(opts, auto_unbox = TRUE, null = "null"),
     placeholder = placeholder,
     style = if (!is.null(width)) sprintf("width:%s;", shiny::validateCssUnit(width))
   )
 
   htmltools::tagList(
     if (!is.null(label)) htmltools::tags$label(`for` = inputId, label),
-    htmltools::attachDependencies(htmltools::tagList(input_tag, js_binding), dep)
+    htmltools::attachDependencies(input_tag, dep)
   )
 }
 
 #' @title Update a typeahead input
-#' @description Replace choices, value or settings client-side.
-#' @param session The Shiny session object
-#' @param inputId The id of the typeahead input to update
-#' @param choices New character vector of choices (optional)
-#' @param value New selected value (optional)
-#' @param items New maximum number of items to show (optional)
-#' @param min_length New minimum characters before showing suggestions (optional)
+#' @description Replace choices or value of typeaheadInput
+#' @param session Shiny session object (default: getDefaultReactiveDomain()).
+#' @param inputId Character string. The id of the typeahead input to update.
+#' @param label Character string or NULL. New display label (optional).
+#' @param choices Character vector or NULL. New choices (optional).
+#' @param value Character string or NULL. New selected value (optional).
 #' @export
-updateTypeaheadInput <- function(session,
+updateTypeaheadInput <- function(session = getDefaultReactiveDomain(),
                                  inputId,
+                                 label = NULL,
                                  choices = NULL,
-                                 value = NULL,
-                                 items = NULL,
-                                 min_length = NULL) {
-  msg <- list()
-  if (!is.null(choices)) {
-    msg$choices <- choices
-  }
-  if (!is.null(value)) {
-    msg$value <- value
-  }
-  if (!is.null(min_length)) {
-    msg$`data-min-length` <- min_length
-  }
-
-  session$sendInputMessage(inputId, msg)
+                                 value = NULL) {
+  stop("not yet implemented")
 }
