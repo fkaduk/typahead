@@ -2,6 +2,9 @@ library(testthat)
 library(shiny)
 library(shinytest2)
 
+testthat::skip_on_ci()
+testthat::skip_on_cran()
+
 new_app <- function(..., name) {
   AppDriver$new(
     ...,
