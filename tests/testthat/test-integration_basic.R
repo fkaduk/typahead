@@ -1,7 +1,7 @@
 library(shinytest2)
 library(shiny)
 
-describe("typeaheadInput — filtering logic", {
+describe("typeaheadInput - filtering logic", {
   it("renders gracefully with an empty dataset", {
     # GIVEN
     app <- shinytest2::AppDriver$new(
@@ -111,6 +111,48 @@ describe("typeaheadInput — filtering logic", {
   it("highlights matched fragments", { })
   it("handles extremely long query strings (>256 chars) without crash", { })
   it("allows free-text entries when `allowFreeText = TRUE`", { })
+})
+
+describe("updateTypeaheadInput - basic", {
+  it("changes suggestions when button is pressed", {
+    # GIVEN
+    app <- shinytest2::AppDriver$new(
+      shinyApp(
+        ui = fluidPage(
+          typeaheadInput(
+            inputId = "test",
+            choices = c("Apple", "Apricot", "Avocado")
+          ),
+          actionButton("change", "Change Suggestions")
+        ),
+        server = function(input, output, session) {
+          observeEvent(input$change, {
+            updateTypeaheadInput(
+              session = session,
+              inputId = "test",
+              choices = c("Ananas", "Arbitrerry")
+            )
+          })
+        }
+      )
+    )
+
+    # WHEN - Type "A" to see original suggestions
+    app$run_js(js_input_event_set("test", "A"))
+    original_count <- app$get_js('document.querySelectorAll(".tt-suggestion").length')
+
+    # Click button to change suggestions
+    app$click("change", wait_ = FALSE)
+
+    # Type "B" to see new suggestions
+    new_count <- app$get_js('document.querySelectorAll(".tt-suggestion").length')
+
+    # THEN - Should show new suggestions
+    expect_equal(original_count, 3)
+    expect_equal(new_count, 2)
+
+    app$stop()
+  })
 })
 
 # describe("typeaheadInput — accessibility semantics", {

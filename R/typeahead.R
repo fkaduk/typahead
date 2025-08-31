@@ -72,5 +72,14 @@ updateTypeaheadInput <- function(session = shiny::getDefaultReactiveDomain(),
                                  label = NULL,
                                  choices = NULL,
                                  value = NULL) {
-  stop("not yet implemented")
+  shiny:::validate_session_object(session)
+  msg <- list(
+    label   = label,
+    choices = choices,
+    value   = if (!is.null(value)) as.character(value) else NULL
+  )
+  session$sendInputMessage(
+    inputId = inputId,
+    message = drop_nulls(msg)
+  )
 }
