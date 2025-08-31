@@ -3,3 +3,4 @@
 ^\.claude$
 ^Dockerfile$
 _\.new\.png$
+specification.md

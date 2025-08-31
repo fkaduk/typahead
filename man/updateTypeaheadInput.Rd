@@ -5,7 +5,7 @@
 \title{Update a typeahead input}
 \usage{
 updateTypeaheadInput(
-  session = getDefaultReactiveDomain(),
+  session = shiny::getDefaultReactiveDomain(),
   inputId,
   label = NULL,
   choices = NULL,

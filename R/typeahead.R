@@ -67,7 +67,7 @@ typeaheadInput <- function(inputId,
 #' @param choices Character vector or NULL. New choices (optional).
 #' @param value Character string or NULL. New selected value (optional).
 #' @export
-updateTypeaheadInput <- function(session = getDefaultReactiveDomain(),
+updateTypeaheadInput <- function(session = shiny::getDefaultReactiveDomain(),
                                  inputId,
                                  label = NULL,
                                  choices = NULL,
