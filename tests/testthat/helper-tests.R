@@ -28,6 +28,13 @@ js_input_event_set <- function(inputId, value) {
   )
 }
 
+#' JS condition that resolves when the typeahead suggestion list is visible
+#'
+#' Returns a JavaScript expression string for use with
+#' \code{app$wait_for_js()}. Evaluates to \code{TRUE} when the \code{.tt-list}
+#' element exists, is not hidden, and contains at least one \code{.tt-suggestion}.
+#'
+#' @return A JS expression string suitable for \code{app$wait_for_js()}.
 js_wait_for_suggestions <- function() {
   "
   !!document.querySelector('.tt-list') &&
