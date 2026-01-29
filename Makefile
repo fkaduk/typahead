@@ -7,18 +7,18 @@ SENTINEL := .docker-build
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-$(SENTINEL): Dockerfile ## Build the Docker image (only when Dockerfile changes)
+$(SENTINEL): Dockerfile DESCRIPTION ## Rebuild image when Dockerfile or deps change
 	docker build -t $(DOCKER_IMAGE) .
 	@touch $(SENTINEL)
 
 test: $(SENTINEL) ## Run all tests in Docker
-	$(DOCKER_RUN) R -e "setwd('/pkg'); devtools::install_deps(dependencies = TRUE); devtools::install(); devtools::test()"
+	$(DOCKER_RUN) R -e "setwd('/pkg'); devtools::install(); devtools::test()"
 
 check: $(SENTINEL) ## Run R CMD check
-	$(DOCKER_RUN) R -e "setwd('/pkg'); devtools::install_deps(dependencies = TRUE); devtools::check()"
+	$(DOCKER_RUN) R -e "setwd('/pkg'); devtools::check()"
 
 lint: $(SENTINEL) ## Run lintr on package
-	$(DOCKER_RUN) R -e "setwd('/pkg'); devtools::install_deps(dependencies = TRUE); lintr::lint_package()"
+	$(DOCKER_RUN) R -e "setwd('/pkg'); lintr::lint_package()"
 
 document: $(SENTINEL) ## Generate documentation with roxygen2
 	$(DOCKER_RUN) R -e "setwd('/pkg'); devtools::document()"

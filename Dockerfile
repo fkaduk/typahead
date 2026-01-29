@@ -45,5 +45,9 @@ RUN R -e "install.packages('devtools')"
 # Set working directory
 WORKDIR /pkg
 
+# Pre-install package deps (layer cached until DESCRIPTION changes)
+COPY DESCRIPTION .
+RUN R -e "devtools::install_deps(dependencies = TRUE)"
+
 # Default command
 CMD ["R"]
