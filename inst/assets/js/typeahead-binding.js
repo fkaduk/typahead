@@ -86,7 +86,6 @@
 
     receiveMessage(el, data) {
       log("receiveMessage START", { id: el.id, data });
-      let needsReinit = false;
 
       if (Object.prototype.hasOwnProperty.call(data, 'value')) {
         this.setValue(el, data.value);
@@ -95,20 +94,13 @@
         const arr = Array.isArray(data.choices) ? data.choices : [];
         log("receiveMessage choices", { id: el.id, len: arr.length, sample: arr.slice(0, 5) });
         el.setAttribute('data-source', JSON.stringify(arr));
-        needsReinit = true;
-      }
-      if (Object.prototype.hasOwnProperty.call(data, 'options')) {
-        const current = parseJSONAttr(el, 'data-options', {}) || {};
-        const merged  = Object.assign({}, current, data.options || {});
-        log("receiveMessage options", { id: el.id, current, incoming: data.options, merged });
-        el.setAttribute('data-options', JSON.stringify(merged));
-        needsReinit = true;
-      }
 
-      if (needsReinit) {
-        log("receiveMessage reinit", { id: el.id });
-        destroyInstance(el);
-        this.initialize(el);
+        const inst = getInstance(el);
+        if (inst) {
+          log("receiveMessage reset+addToIndex", { id: el.id });
+          inst.reset(true);
+          inst.addToIndex(arr);
+        }
       }
 
       // Signal value may have changed (NO payload!)

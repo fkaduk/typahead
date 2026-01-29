@@ -141,10 +141,14 @@ describe("updateTypeaheadInput - basic", {
     app$run_js(js_input_event_set("test", "A"))
     original_count <- app$get_js('document.querySelectorAll(".tt-suggestion").length')
 
-    # Click button to change suggestions
-    app$click("change", wait_ = FALSE)
+    # Click button to change suggestions and wait for server round-trip
+    app$click("change")
+    app$wait_for_idle()
 
-    # Type "B" to see new suggestions
+    # Clear and re-type to trigger new suggestions
+    app$run_js(js_input_event_set("test", ""))
+    app$run_js(js_input_event_set("test", "A"))
+    app$wait_for_js(js_wait_for_suggestions())
     new_count <- app$get_js('document.querySelectorAll(".tt-suggestion").length')
 
     # THEN - Should show new suggestions
