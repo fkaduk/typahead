@@ -98,12 +98,19 @@
         const inst = getInstance(el);
         if (inst) {
           log("receiveMessage reset+addToIndex", { id: el.id });
+          const currentValue = el.value;
           inst.reset(true);
           inst.addToIndex(arr);
+          // reset() clears el.value; restore and dispatch a native
+          // InputEvent so the library re-searches with the current query
+          el.value = currentValue;
+          el.dispatchEvent(new InputEvent('input', {
+            bubbles: true, inputType: 'insertText', data: currentValue
+          }));
         }
       }
 
-      // Signal value may have changed (NO payload!)
+      // Notify Shiny that the value may have changed
       $(el).trigger('input');
       log("receiveMessage END", { id: el.id, value: el.value });
     },
