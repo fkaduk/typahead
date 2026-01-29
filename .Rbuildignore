@@ -4,3 +4,5 @@
 ^Dockerfile$
 _\.new\.png$
 specification.md
+^Makefile$
+^\.docker-build$
