@@ -54,3 +54,6 @@ shinyApp(ui = ui, server = server)
 
 Check out the Makefile for some common operations that help development.
 
+## TODO
+
+- add gifs/videos to README
