@@ -5,10 +5,13 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/fkaduk/typahead/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fkaduk/typahead/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/fkaduk/typahead/graph/badge.svg)](https://app.codecov.io/gh/fkaduk/typahead)
-[![R-CMD-check](https://github.com/fkaduk/typaheadsa/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fkaduk/typaheadsa/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of typeahead is to ...
+The `typeahead` package provides a versatile autocomplete text input component
+for R Shiny applications or R markdown.
+It wraps the typeahead-standalone JavaScript library
+to deliver both client-side type-ahead functionality
+with dropdown and inline suggestions.
 
 ## Installation
 
