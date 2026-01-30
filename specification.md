@@ -12,7 +12,6 @@
 - [ ] add `hint` parameter for auto-completion hints (requires fixing Bootstrap CSS positioning issues!)
 - [ ] make it possible for the typeahead input to load remote data
 - [ ] add `reactive_on` parameter to control when shiny reactivity triggers (e.g., "selection", "input", "debounced")
-- [ ] add `template` parameter for complex entry templates with rich display formatting
 - [ ] enable `server`-side processing
 - [ ] enable named choices to allow for differences between display/backend value
 
