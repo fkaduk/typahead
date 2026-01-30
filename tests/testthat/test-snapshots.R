@@ -1,3 +1,5 @@
+# TODO: re-enable on CI once R version is pinned to match local/Docker (4.4.0)
+testthat::skip_on_ci()
 testthat::skip_on_os(c("mac", "windows"))
 
 describe("typeaheadInput snapshot tests", {
