@@ -71,7 +71,8 @@ describe("typeaheadInput screenshot tests", {
             choices = c("Berlin", "Boston", "Barcelona", "Brussels"),
             placeholder = "Start typing..."
           ),
-          selectInput("country", "Country", choices = c("DE", "US", "ES", "BE"))
+          selectInput("country", "Country", choices = c("DE", "US", "ES", "BE")),
+          textInput("notes", "Notes")
         ),
         server = function(...) {}
       ),
@@ -84,24 +85,28 @@ describe("typeaheadInput screenshot tests", {
     app$stop()
   })
 
-  it("renders with bslib Bootstrap 5 theme", {
+  it("renders with bslib Bootstrap 5 dark theme", {
     app <- new_app(
       shinyApp(
         ui = bslib::page_fluid(
-          theme = bslib::bs_theme(version = 5),
+          theme = bslib::bs_theme(version = 5, preset = "darkly"),
+          h3("Form"),
+          textInput("name", "Name"),
           typeaheadInput(
             inputId = "test",
-            label = "BS5 Input",
-            choices = c("Apple", "Apricot", "Banana", "Cherry"),
+            label = "City",
+            choices = c("Berlin", "Boston", "Barcelona", "Brussels"),
             placeholder = "Start typing..."
-          )
+          ),
+          selectInput("country", "Country", choices = c("DE", "US", "ES", "BE")),
+          textInput("notes", "Notes")
         ),
         server = function(...) {}
       ),
       name = "typeahead-bslib"
     )
 
-    app$run_js(js_input_event_set("test", "A"))
+    app$run_js(js_input_event_set("test", "B"))
     app$wait_for_idle()
     app$expect_screenshot()
     app$stop()
