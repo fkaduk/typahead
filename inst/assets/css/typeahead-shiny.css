@@ -1,7 +1,7 @@
 .typeahead-standalone {
   position: relative;
   text-align: left;
-  color: #000;
+  color: var(--bs-body-color, #000);
 }
 .typeahead-standalone .tt-input {
   z-index: 1;
@@ -13,16 +13,16 @@
   left: 0;
   cursor: default;
   user-select: none;
-  background: #fff;
+  background: var(--bs-body-bg, #fff);
   color: silver;
   z-index: 0;
 }
 .typeahead-standalone .tt-list {
-  background: #fff;
+  background: var(--bs-body-bg, #fff);
   z-index: 1000;
   box-sizing: border-box;
   overflow: auto;
-  border: 1px solid rgba(50, 50, 50, 0.6);
+  border: 1px solid var(--bs-border-color, rgba(50, 50, 50, 0.6));
   border-radius: 4px;
   box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
   position: absolute;
@@ -36,12 +36,13 @@
 }
 .typeahead-standalone .tt-list .tt-suggestion:hover,
 .typeahead-standalone .tt-list .tt-suggestion.tt-selected {
-  background: #55acee;
+  background: var(--bs-primary, #55acee);
+  color: var(--bs-white, #fff);
   cursor: pointer;
 }
 .typeahead-standalone .tt-list .tt-suggestion .tt-highlight {
   font-weight: 900;
 }
 .typeahead-standalone .tt-list .tt-group {
-  background: #eee;
+  background: var(--bs-secondary-bg, #eee);
 }
