@@ -8,14 +8,12 @@
   --aa-selected-color-rgb: var(--bs-primary-rgb, 13, 110, 253);
   --aa-panel-border-color-rgb: var(--bs-border-color-rgb, 222, 226, 230);
 }
-
 /* Plain text input style: hide search icon and buttons */
 .typeahead-container .aa-SubmitButton,
 .typeahead-container .aa-ClearButton,
 .typeahead-container .aa-LoadingIndicator {
   display: none;
 }
-
 /* Match Bootstrap form-control sizing */
 .typeahead-container .aa-Input {
   font-size: 1rem;

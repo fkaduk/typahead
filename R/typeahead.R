@@ -32,15 +32,17 @@ dependency_typeahead <- function() {
 #' @return A shiny.tag.list object containing the HTML input element with attached dependencies.
 #' @export
 typeaheadInput <- function(
-    inputId,
-    label = NULL,
-    choices = character(),
-    value = NULL,
-    width = NULL,
-    placeholder = NULL,
-    items = 8,
-    min_length = 1,
-    options = list()) {
+  inputId,
+  label = NULL,
+  choices = character(),
+  value = NULL,
+  width = NULL,
+  placeholder = NULL,
+  items = 8,
+  min_length = 1,
+  hint = FALSE,
+  options = list()
+) {
   opts <- modifyList(
     list(
       limit = items,
@@ -48,6 +50,16 @@ typeaheadInput <- function(
     ),
     options
   )
+
+  if (!is.null(names(choices))) {
+    choices <- mapply(
+      function(nm, html) list(label = nm, html = html),
+      names(choices),
+      unname(choices),
+      SIMPLIFY = FALSE,
+      USE.NAMES = FALSE
+    )
+  }
 
   dep <- dependency_typeahead()
 
@@ -78,11 +90,12 @@ typeaheadInput <- function(
 #' @param value Character string or NULL. New selected value (optional).
 #' @export
 updateTypeaheadInput <- function(
-    session = shiny::getDefaultReactiveDomain(),
-    inputId,
-    label = NULL,
-    choices = NULL,
-    value = NULL) {
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  label = NULL,
+  choices = NULL,
+  value = NULL
+) {
   # emulate shiny:::validate_session_object()
   if (
     !inherits(session, c("ShinySession", "MockShinySession", "session_proxy"))
@@ -93,6 +106,18 @@ updateTypeaheadInput <- function(
       call. = FALSE
     )
   }
+  if (!is.null(choices) && !is.null(names(choices))) {
+    choices <- mapply(
+      function(nm, html) list(label = nm, html = html),
+      names(choices),
+      unname(choices),
+      SIMPLIFY = FALSE,
+      USE.NAMES = FALSE
+    )
+  } else if (!is.null(choices)) {
+    choices <- as.list(choices)
+  }
+
   msg <- list(
     label = label,
     choices = choices,

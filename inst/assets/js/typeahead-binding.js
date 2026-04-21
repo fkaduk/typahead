@@ -1,5 +1,5 @@
 (function () {
-  const DEBUG = false;
+  const DEBUG = true;
   const log = (...args) => {
     if (DEBUG) console.debug("[typeahead]", ...args);
   };
@@ -14,13 +14,14 @@
   }
   const { autocomplete } = aa;
 
+  //parse input from R server
   function parseJSONAttr(el, attr, fallback) {
     const raw = el.getAttribute(attr);
     if (!raw) return fallback;
     try {
       return JSON.parse(raw);
     } catch (e) {
-      warn("parseJSONAttr FAIL", { id: el.id, attr, error: e });
+      log("parseJSONAttr FAIL", { id: el.id, attr, raw, error: e });
       return fallback;
     }
   }
@@ -55,8 +56,8 @@
       .replace(/[\u0300-\u036f]/g, "");
   }
 
+  //shiny input binding
   const binding = new Shiny.InputBinding();
-
   $.extend(binding, {
     find(scope) {
       return $(scope).find("div.typeahead-container");
@@ -144,15 +145,28 @@
       if (Object.prototype.hasOwnProperty.call(data, "value")) {
         this.setValue(el, data.value);
       }
-
       $(el).trigger("change");
     },
 
     subscribe(el, callback) {
       log("subscribe", { id: el.id });
-      $(el).on("change.typeaheadBinding", () => {
-        callback();
-      });
+      const $el = $(el);
+      const handler = (ev) => {
+        // DO NOT pass arguments to callback; Shiny expects none
+        log("event -> callback()", {
+          id: el.id,
+          ev: ev.type,
+          value: el.value,
+          type: typeof el.value,
+        });
+        try {
+          callback();
+        } catch (e) {
+          log("callback error", e);
+        }
+      };
+      $el.on("input.typeaheadBinding change.typeaheadBinding", handler);
+      el.__ta_handler__ = handler;
 
       // Also listen for direct input on the Algolia input
       const input = getInput(el);
@@ -166,11 +180,17 @@
     unsubscribe(el) {
       log("unsubscribe", { id: el.id });
       $(el).off(".typeaheadBinding");
-      const input = getInput(el);
-      if (input) {
-        $(input).off(".typeaheadBinding");
+      const inst = el.__ta_instance__;
+      if (inst && typeof inst.destroy === "function") {
+        log("destroy instance", el.id);
+        try {
+          inst.destroy();
+        } catch (e) {
+          log("destroy instance error", e);
+        }
       }
-      destroyInstance(el);
+      el.__ta_instance__ = null;
+      el.__ta_handler__ = null;
     },
   });
 
