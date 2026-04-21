@@ -155,27 +155,28 @@ describe("typeaheadInput - rich display via named choices", {
 
     # WHEN — type "B" to trigger suggestions
     app$run_js(js_input_event_set("city", "B"))
+    app$wait_for_js(js_wait_for_suggestions())
 
     # THEN — should see 3 suggestions with HTML content
     suggestion_count <- app$get_js(
-      'document.querySelectorAll(".tt-suggestion").length'
+      'document.querySelectorAll(".aa-Item").length'
     )
     expect_equal(suggestion_count, 3)
 
     # Verify HTML rendering: suggestion should contain <strong> tags
     has_strong <- app$get_js(
-      'document.querySelector(".tt-suggestion strong") !== null'
+      'document.querySelector(".aa-Item strong") !== null'
     )
     expect_true(has_strong)
 
     # WHEN — click first suggestion
     app$run_js(
-      'document.querySelector(".tt-suggestion").click()'
+      'document.querySelector(".aa-Item").click()'
     )
     app$wait_for_idle()
 
     # THEN — input value should be plain label, not HTML
-    input_val <- app$get_js('document.getElementById("city").value')
+    input_val <- app$get_js('document.querySelector("#city .aa-Input").value')
     expect_true(input_val %in% c("Berlin", "Boston", "Barcelona"))
     expect_false(grepl("<strong>", input_val))
 
@@ -212,15 +213,16 @@ describe("typeaheadInput - rich display via named choices", {
     app$click("switch_rich")
     app$wait_for_idle()
     app$run_js(js_input_event_set("city", "B"))
+    app$wait_for_js(js_wait_for_suggestions())
 
     # THEN — should show 2 rich suggestions
     suggestion_count <- app$get_js(
-      'document.querySelectorAll(".tt-suggestion").length'
+      'document.querySelectorAll(".aa-Item").length'
     )
     expect_equal(suggestion_count, 2)
 
     has_strong <- app$get_js(
-      'document.querySelector(".tt-suggestion strong") !== null'
+      'document.querySelector(".aa-Item strong") !== null'
     )
     expect_true(has_strong)
 

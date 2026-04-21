@@ -40,7 +40,6 @@ typeaheadInput <- function(
   placeholder = NULL,
   items = 8,
   min_length = 1,
-  hint = FALSE,
   options = list()
 ) {
   opts <- modifyList(

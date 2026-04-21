@@ -58,7 +58,8 @@ describe("typeaheadInput screenshot tests", {
       name = "typeahead-suggestions"
     )
     app$run_js(js_input_event_set("city", "B"))
-    app$wait_for_idle()
+    app$wait_for_js(js_wait_for_suggestions())
+    app$run_js("document.head.insertAdjacentHTML('beforeend', '<style>*{transition:none!important;animation:none!important}</style>')")
     app$expect_screenshot()
     app$stop()
   })
@@ -79,7 +80,8 @@ describe("typeaheadInput screenshot tests", {
       name = "typeahead-dark-suggestions"
     )
     app$run_js(js_input_event_set("city", "B"))
-    app$wait_for_idle()
+    app$wait_for_js(js_wait_for_suggestions())
+    app$run_js("document.head.insertAdjacentHTML('beforeend', '<style>*{transition:none!important;animation:none!important}</style>')")
     app$expect_screenshot()
     app$stop()
   })

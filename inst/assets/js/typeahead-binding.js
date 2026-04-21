@@ -81,7 +81,7 @@
         container: el,
         placeholder: placeholder,
         openOnFocus: false,
-        detachedMediaQuery: "",
+        detachedMediaQuery: "none",
         initialState: {
           query: initialValue,
         },
@@ -89,17 +89,25 @@
           if (query.length < minLength) return [];
           const q = normalize(query);
           const items = (el.__aa_choices__ || [])
-            .filter((item) => normalize(item).includes(q))
+            .filter((item) => {
+              const text = typeof item === "string" ? item : item.label;
+              return normalize(text).includes(q);
+            })
             .slice(0, limit)
-            .map((item) => ({ label: item }));
+            .map((item) =>
+              typeof item === "string" ? { label: item } : item,
+            );
           return [
             {
               sourceId: "local",
               getItems: () => items,
               getItemInputValue: ({ item }) => item.label,
               templates: {
-                item: ({ item, html }) => {
-                  return html`<div class="aa-ItemContent">${item.label}</div>`;
+                item: ({ item, createElement }) => {
+                  return createElement("div", {
+                    className: "aa-ItemContent",
+                    dangerouslySetInnerHTML: { __html: item.html || item.label },
+                  });
                 },
               },
             },
