@@ -80,6 +80,7 @@
         container: el,
         placeholder: placeholder,
         openOnFocus: false,
+        detachedMediaQuery: "",
         initialState: {
           query: initialValue,
         },

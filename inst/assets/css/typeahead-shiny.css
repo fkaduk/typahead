@@ -27,11 +27,3 @@
   color: #fff;
 }
 
-/* Disable detached (modal) mode */
-.aa-DetachedOverlay {
-  display: none !important;
-}
-
-.typeahead-container .aa-DetachedSearchButton {
-  display: none !important;
-}

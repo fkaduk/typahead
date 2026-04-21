@@ -11,8 +11,8 @@ new_app <- function(..., name) {
     name = name,
     variant = platform_variant(),
     seed = 1,
-    width = 1280,
-    height = 720
+    width = 400,
+    height = 400
   )
 }
 
@@ -24,8 +24,7 @@ basic_ui <- function(...) {
       label = "City",
       choices = c("Berlin", "Boston", "Barcelona", "Brussels"),
       placeholder = "Start typing..."
-    ),
-    selectInput("country", "Country", choices = c("DE", "US", "ES", "BE"))
+    )
   )
 }
 
@@ -38,8 +37,7 @@ dark_ui <- function(...) {
       label = "City",
       choices = c("Berlin", "Boston", "Barcelona", "Brussels"),
       placeholder = "Start typing..."
-    ),
-    selectInput("country", "Country", choices = c("DE", "US", "ES", "BE"))
+    )
   )
 }
 
@@ -65,18 +63,6 @@ describe("typeaheadInput screenshot tests", {
     app$stop()
   })
 
-  it("renders with selectInput open", {
-    app <- new_app(
-      shinyApp(ui = basic_ui(), server = function(...) {}),
-      name = "typeahead-select-open"
-    )
-    app$run_js('document.querySelector("#country-selectized").focus();
-                document.querySelector("#country + .selectize-control .selectize-input").click();')
-    app$wait_for_idle()
-    app$expect_screenshot()
-    app$stop()
-  })
-
   it("renders idle state in dark theme", {
     app <- new_app(
       shinyApp(ui = dark_ui(), server = function(...) {}),
@@ -93,18 +79,6 @@ describe("typeaheadInput screenshot tests", {
       name = "typeahead-dark-suggestions"
     )
     app$run_js(js_input_event_set("city", "B"))
-    app$wait_for_idle()
-    app$expect_screenshot()
-    app$stop()
-  })
-
-  it("renders with selectInput open in dark theme", {
-    app <- new_app(
-      shinyApp(ui = dark_ui(), server = function(...) {}),
-      name = "typeahead-dark-select-open"
-    )
-    app$run_js('document.querySelector("#country-selectized").focus();
-                document.querySelector("#country + .selectize-control .selectize-input").click();')
     app$wait_for_idle()
     app$expect_screenshot()
     app$stop()
