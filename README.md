@@ -60,6 +60,6 @@ including `make test` and `make check`.
 
 ## TODO
 
-- add gifs/videos to README
+- upload `videos/demo.webm` to GitHub via issue comment drag-and-drop, copy asset URL, embed in README: `<video src="URL" controls></video>`
 - add screenshots to README based on screenshot tests
 - fix styling/layout issues

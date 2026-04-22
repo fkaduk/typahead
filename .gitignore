@@ -11,3 +11,6 @@ inst/doc
 *_.new.png
 .docker-build
 inst/examples/app_cache
+scripts/record-demo/node_modules/
+videos/
+/demo.gif

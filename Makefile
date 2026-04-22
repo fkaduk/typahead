@@ -53,6 +53,26 @@ demo: $(SENTINEL) ## Run the demo app with auto-reload on file changes
 		fi; \
 	done
 
+RECORD_PORT     := 3839
+RECORD_CONTAINER := typeahead-demo-video
+
+demo-video: $(SENTINEL) ## Record demo.webm + demo.gif via Playwright (requires node, ffmpeg)
+	@docker stop $(RECORD_CONTAINER) 2>/dev/null || true
+	@echo ">> Starting Shiny app on port $(RECORD_PORT) ..."
+	@docker run --rm -d --name $(RECORD_CONTAINER) -p $(RECORD_PORT):$(RECORD_PORT) -v "$$(pwd):/pkg" $(DOCKER_IMAGE) \
+		R -e "setwd('/pkg'); devtools::install(quiet=TRUE); shiny::runApp('inst/examples', port=$(RECORD_PORT), host='0.0.0.0')" > /dev/null
+	@echo ">> Waiting for app to be ready ..."
+	@until curl -sf http://localhost:$(RECORD_PORT) > /dev/null; do sleep 2; done
+	@sleep 2
+	@echo ">> Recording ..."
+	@cd scripts/record-demo && npm install --silent && APP_URL=http://localhost:$(RECORD_PORT) node record-demo.js
+	@docker stop $(RECORD_CONTAINER) 2>/dev/null || true
+	@echo ">> Converting to GIF ..."
+	@ffmpeg -y -i videos/demo.webm \
+		-vf "fps=20,scale=960:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer" \
+		-loop 0 demo.gif
+	@echo ">> Done: videos/demo.webm  demo.gif"
+
 shell: $(SENTINEL) ## Open R shell in Docker container
 	docker run --rm -it -v "$$(pwd):/pkg" $(DOCKER_IMAGE) R
 
